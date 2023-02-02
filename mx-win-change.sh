@@ -2,7 +2,7 @@
 
 # History of active apps. Whenever some new app is active they will pushed to array, 
 #if some known app is active again they will be pushed to the last place
-
+confFolderPath=/home/luxal/PC/MxConfig/mx-config
 activeApplications=()
 
 # Function which is triggered on mouse click
@@ -39,12 +39,13 @@ addActiveApplication() {
 
 # Send notification to reload solaar config file
 reloadSolaar() {
-python3 /home/luxal/mx-config/socket-reload.py
+python3 /home/luxal/PC/MxConfig/socket-reload.py
 }
 
 #Copy configuration
 copyConfiguration() {
-  cp $1 /home/luxal/.config/solaar/rules.yaml
+	confPath=$confFolderPath/$1
+	cp $confPath /home/luxal/.config/solaar/rules.yaml
 }
 
 # Decide which config will be set by app
@@ -52,13 +53,16 @@ copyConfigDependsOnApp() {
   activeApplication=$1
   case $activeApplication in
   chrome)
-    copyConfiguration /home/luxal/mx-config/chrome-rules.yaml
+    copyConfiguration chrome-rules.yaml
     ;;
   java)
-    copyConfiguration /home/luxal/mx-config/ws-rules.yaml
+    copyConfiguration ws-rules.yaml
     ;;
-  *)
-    copyConfiguration /home/luxal/mx-config/rules.yaml
+  slack)
+    copyConfiguration slack-rules.yaml
+    ;;
+     *)
+    copyConfiguration rules.yaml
    ;;
   esac
    reloadSolaar
