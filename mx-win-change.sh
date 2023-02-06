@@ -2,9 +2,9 @@
 
 # History of active apps. Whenever some new app is active they will pushed to array,
 #if some known app is active again they will be pushed to the last place
-confFolderPath=/home/luxal/PC/MxConfig/mx-config
 activeApplications=()
 activeChromeLinks=()
+confFolderPath=/home/luxal/PC/MxConfig/mx-config
 
 # Function which is triggered on mouse click
 mouseupFunction() {
@@ -63,6 +63,12 @@ copyConfigDependsOnApp() {
   slack)
     copyConfiguration slack-rules.yaml
     ;;
+  gjs)
+    copyConfiguration system-rules.yaml
+    ;;
+  *telegram*)
+    copyConfiguration telegram-rules.yaml
+    ;;
   *)
     copyConfiguration rules.yaml
     ;;
@@ -71,42 +77,43 @@ copyConfigDependsOnApp() {
 
 }
 
-copyChromeConfigurationDependsOnLink(){
+copyChromeConfigurationDependsOnLink() {
   currentLink="${activeChromeLinks[-1]}"
+  previousActiveApp=activeChromeLinks[0]
   case "${currentLink}" in
-    *youtube*)
-      copyConfiguration yt-rules.yaml
-      ;;
-    *meet*)
-      echo "meet"
+  *youtube*)
+    copyConfiguration yt-rules.yaml
     ;;
-    *)
-      copyConfiguration chrome-rules.yaml
-      ;;
-    esac
+  *meet*)
+    copyConfiguration meet-rules.yaml
+    ;;
+  *)
+    copyConfiguration chrome-rules.yaml
+    ;;
+  esac
 }
 
 getUrlFromActiveChromeTab() {
-  activeTabSessionNumber=$(bt active 2>&1 | grep -Eo "b.[0-9]{10}.[0-9]{10}")
+  activeTabSessionNumber=$(bt active 2>&1 | grep -Eo "[A-Za-z].[0-9]{10}.[0-9]{10}")
   urlRegex="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)"
   urlOfActiveTab=$(bt list | grep "${activeTabSessionNumber}" | grep -Eo "${urlRegex}")
   echo "${urlOfActiveTab}"
 }
 
-addActiveChromeLink(){
-   potentialLink=$1
-    if [[ ! "${activeChromeLinks[*]}" =~ potentialLink ]]; then
-      activeChromeLinks+=("${potentialLink}")
-    else
-      indexOfLink=0
-      for i in "${!activeChromeLinks[@]}"; do
-        if [[ "${activeChromeLinks[$i]}" = "${potentialLink}" ]]; then
-          indexOfLink=$i
-        fi
-      done
-      unset "activeChromeLinks[$indexOfLink]"
-      activeChromeLinks+=("${potentialLink}")
-    fi
+addActiveChromeLink() {
+  potentialLink=$1
+  if [[ ! "${activeChromeLinks[*]}" =~ potentialLink ]]; then
+    activeChromeLinks+=("${potentialLink}")
+  else
+    indexOfLink=0
+    for i in "${!activeChromeLinks[@]}"; do
+      if [[ "${activeChromeLinks[$i]}" = "${potentialLink}" ]]; then
+        indexOfLink=$i
+      fi
+    done
+    unset "activeChromeLinks[$indexOfLink]"
+    activeChromeLinks+=("${potentialLink}")
+  fi
 }
 
 cnee --record --mouse |
