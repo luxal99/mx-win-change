@@ -87,6 +87,9 @@ copyChromeConfigurationDependsOnLink() {
   *meet*)
     copyConfiguration meet-rules.yaml
     ;;
+  *udemy*)
+      copyConfiguration udemy-rules.yaml
+      ;;
   *)
     copyConfiguration chrome-rules.yaml
     ;;
