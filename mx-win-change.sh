@@ -123,18 +123,18 @@ addActiveChromeLink() {
 getActiveMonitor(){
   currentMonitorXCoordinates=$(xdotool getmouselocation --shell | grep X | cut -c 3-10)
   if [ $currentMonitorXCoordinates -gt 1920 ]; then
-      changeSuperActionIfYouAreOnRightMonitor
+      changeMouseFocusIfYouAreOnRightMonitor
   else
-    changeSuperActionIfYouAreOnLeftMonitor
+    changeMouseFocusIfYouAreOnLeftMonitor
   fi
 }
 
-changeSuperActionIfYouAreOnRightMonitor(){
-  sed -i 's/2600/500/g' /home/luxal/.config/solaar/rules.yaml
+changeMouseFocusIfYouAreOnRightMonitor(){
+  sed -i 's/2880/960/g' /home/luxal/.config/solaar/rules.yaml
 }
 
-changeSuperActionIfYouAreOnLeftMonitor(){
-  sed -i 's/500/2600/g' /home/luxal/.config/solaar/rules.yaml
+changeMouseFocusIfYouAreOnLeftMonitor(){
+  sed -i 's/960/2880/g' /home/luxal/.config/solaar/rules.yaml
 }
 
 cnee --record --mouse |
