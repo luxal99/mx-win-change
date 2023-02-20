@@ -73,6 +73,7 @@ copyConfigDependsOnApp() {
     copyConfiguration rules.yaml
     ;;
   esac
+  getActiveMonitor
   reloadSolaar
 
 }
@@ -117,6 +118,23 @@ addActiveChromeLink() {
     unset "activeChromeLinks[$indexOfLink]"
     activeChromeLinks+=("${potentialLink}")
   fi
+}
+
+getActiveMonitor(){
+  currentMonitorXCoordinates=$(xdotool getmouselocation --shell | grep X | cut -c 3-10)
+  if [ $currentMonitorXCoordinates -gt 1920 ]; then
+      changeSuperActionIfYouAreOnRightMonitor
+  else
+    changeSuperActionIfYouAreOnLeftMonitor
+  fi
+}
+
+changeSuperActionIfYouAreOnRightMonitor(){
+  sed -i 's/2600/500/g' /home/luxal/.config/solaar/rules.yaml
+}
+
+changeSuperActionIfYouAreOnLeftMonitor(){
+  sed -i 's/500/2600/g' /home/luxal/.config/solaar/rules.yaml
 }
 
 cnee --record --mouse |
