@@ -4,7 +4,7 @@ The main purpose of this script is dynamic changing rules for Mx Master mouses.
 ### Features
 1. Change mx master mouse config depends on active app
 2. When the chrome is active app, you're able to write config for each active app in tab
-
+3. If you use two monitors, middle button is configured to change focus(cursor).
 
 # Required software for normal usage
 1. [Solaar](https://pwr-solaar.github.io/Solaar/) (min-version 1.1.8)
