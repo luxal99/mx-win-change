@@ -139,7 +139,7 @@ changeMouseFocusIfYouAreOnLeftMonitor(){
 
 cnee --record --mouse |
   while read line; do
-    if [ ! -z "$(echo "$line" | awk '/7,5,0,0,1/')" ]; then
+    if [ ! -z "$(echo "$line" | grep '7,5,0,0,1')" ]; then
       mouseupFunction
     fi
   done
