@@ -9,6 +9,7 @@ confFolderPath=/home/luxal/PC/MxConfig/mx-config
 # Function which is triggered on mouse click
 mouseupFunction() {
   activeApplication="$(cat /proc/$(xdotool getwindowpid $(xdotool getwindowfocus))/comm)"
+  echo $activeApplication
   previousActiveApp=activeApplications[0]
   if [[ ${#activeApplications[@]} != 0 ]]; then
     previousActiveApp=${activeApplications[-1]}
