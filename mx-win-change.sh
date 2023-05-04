@@ -75,6 +75,7 @@ copyConfigDependsOnApp() {
     ;;
   esac
   getActiveMonitor
+  changeMouseScrollMode
   reloadSolaar
 
 }
@@ -89,6 +90,9 @@ copyChromeConfigurationDependsOnLink() {
   *meet*)
     copyConfiguration meet-rules.yaml
     ;;
+  *zoom*)
+      copyConfiguration meet-rules.yaml
+      ;;
   *udemy*)
       copyConfiguration udemy-rules.yaml
       ;;
@@ -136,6 +140,19 @@ changeMouseFocusIfYouAreOnRightMonitor(){
 
 changeMouseFocusIfYouAreOnLeftMonitor(){
   sed -i 's/960/2880/g' /home/luxal/.config/solaar/rules.yaml
+}
+
+changeMouseScrollMode(){
+  currentMode=$(cat /home/luxal/.config/solaar/config.yaml| grep 'scroll-ratchet' | grep -Eiv 'sensitive' | cut -d ":" -f2)
+  #  1 - FREESPINNING
+  #  2 - RATCHETED
+  if [ $currentMode = "1" ]; then
+    sed -i 's/scroll-ratchet, 1/scroll-ratchet, 2/' /home/luxal/.config/solaar/rules.yaml
+  fi
+
+  if [ $currentMode = "2" ]; then
+      sed -i 's/scroll-ratchet, 2/scroll-ratchet, 1/' /home/luxal/.config/solaar/rules.yaml
+  fi
 }
 
 cnee --record --mouse |
