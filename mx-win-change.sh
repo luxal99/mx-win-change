@@ -9,7 +9,6 @@ confFolderPath=/home/luxal/PC/MxConfig/mx-config
 # Function which is triggered on mouse click
 mouseupFunction() {
   activeApplication="$(cat /proc/$(xdotool getwindowpid $(xdotool getwindowfocus))/comm)"
-  echo $activeApplication
   previousActiveApp=activeApplications[0]
   if [[ ${#activeApplications[@]} != 0 ]]; then
     previousActiveApp=${activeApplications[-1]}
@@ -70,12 +69,19 @@ copyConfigDependsOnApp() {
   *telegram*)
     copyConfiguration telegram-rules.yaml
     ;;
+  *teams*)
+      copyConfiguration teams-rules.yaml
+    ;;
+  *postman*)
+        copyConfiguration postman-rules.yaml
+      ;;
   *)
     copyConfiguration rules.yaml
     ;;
   esac
   getActiveMonitor
   changeMouseScrollMode
+#  changeMouseVerticalScrollMode
   reloadSolaar
 
 }
@@ -83,12 +89,16 @@ copyConfigDependsOnApp() {
 copyChromeConfigurationDependsOnLink() {
   currentLink="${activeChromeLinks[-1]}"
   previousActiveApp=activeChromeLinks[0]
+  echo $currentLink
   case "${currentLink}" in
   *youtube*)
     copyConfiguration yt-rules.yaml
     ;;
   *meet*)
     copyConfiguration meet-rules.yaml
+    ;;
+  *teams*)
+    copyConfiguration teams-rules.yaml
     ;;
   *zoom*)
       copyConfiguration meet-rules.yaml
@@ -153,6 +163,23 @@ changeMouseScrollMode(){
   if [ $currentMode = "2" ]; then
       sed -i 's/scroll-ratchet, 2/scroll-ratchet, 1/' /home/luxal/.config/solaar/rules.yaml
   fi
+
+  echo $(cat /home/luxal/.config/solaar/rules.yaml)
+}
+
+changeMouseVerticalScrollMode(){
+  currentMode=$(cat /home/luxal/.config/solaar/config.yaml| grep 'thumb-scroll-mode' | grep -Eiv 'sensitive' | cut -d ":" -f2)
+  #  true - DIVERTED
+  #  false - NO
+  if [ $currentMode = "true" ]; then
+    sed -i 's/scroll-ratchet, true/thumb-scroll-mode, false/' /home/luxal/.config/solaar/rules.yaml
+  fi
+
+  if [ $currentMode = "false" ]; then
+      sed -i 's/scroll-ratchet, false/thumb-scroll-mode, false/' /home/luxal/.config/solaar/rules.yaml
+  fi
+
+  echo $(cat /home/luxal/.config/solaar/rules.yaml)
 }
 
 cnee --record --mouse |
