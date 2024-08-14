@@ -57,7 +57,7 @@ copyConfigDependsOnApp() {
     addActiveChromeLink "$(getUrlFromActiveChromeTab)"
     copyChromeConfigurationDependsOnLink
     ;;
-  java)
+  webstorm)
     copyConfiguration ws-rules.yaml
     ;;
   slack)
@@ -80,7 +80,7 @@ copyConfigDependsOnApp() {
     ;;
   esac
   getActiveMonitor
-  changeMouseScrollMode
+  #changeMouseScrollMode
 #  changeMouseVerticalScrollMode
   reloadSolaar
 
